@@ -30,7 +30,7 @@ def extract_data_from_gpx(gpx_file_path):
     return route_df
 
 # ADD YOUR FILE PATH HERE
-gpx_file_path = 'C:\\Users\\Sasha\\Downloads\\activity_11445954077.gpx'
+gpx_file_path = 'x'
 route_df = extract_data_from_gpx(gpx_file_path)
 #route_df = extract_data_from_gpx(gpx_file_path)
 z_k = route_df[['latitude', 'longitude', 'elevation', 'time', 'speed']].values
@@ -78,7 +78,7 @@ def ekf(z_k_observation_vector, state_estimate_k_minus_1, P_k_minus_1):
 def main():
     # Extract data from GPX file
     # ADD YOUR FILE PATH HERE
-    gpx_file_path = 'C:\\Users\\Sasha\\Downloads\\activity_11445954077.gpx'
+    gpx_file_path = 'x'
     route_df = extract_data_from_gpx(gpx_file_path)
     z_k = route_df[['latitude', 'longitude', 'elevation']].values
 
