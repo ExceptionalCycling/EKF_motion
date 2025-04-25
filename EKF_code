@@ -83,7 +83,6 @@ def main():
     z_k = route_df[['latitude', 'longitude', 'elevation']].values
 
     # Initialization
-    # COPY AND PASTE YOUR FIRST DATA POINT HERE
     #state_estimate_k_minus_1 = np.array([43.7812687642872333526611328125, -80.03338177688419818878173828125, 390.79998779296875])
     state_estimate = z_k[0].copy()    
     P_k_minus_1 = np.eye(3) * 0.1  # Identity matrix with 0.1 instead of 1
