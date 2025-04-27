@@ -128,5 +128,9 @@ def main():
     plt.legend()
     plt.show()
 
+    print("Estimated (lat, lon) pairs:")
+    for lat, lon in zip(estimated_latitudes, estimated_longitudes):
+      print(f"({lat:.6f}, {lon:.6f})")
+
 # Call the main function
 main()
