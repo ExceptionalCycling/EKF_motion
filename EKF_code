@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import gpxpy
 import matplotlib.pyplot as plt
+import sys
 
 def extract_data_from_gpx(gpx_file_path):
     gpx = gpxpy.parse(open(gpx_file_path, 'r', encoding='utf-8'))
@@ -30,13 +31,13 @@ def extract_data_from_gpx(gpx_file_path):
     return route_df
 
 # ADD YOUR FILE PATH HERE
-gpx_file_path = 'x'
-route_df = extract_data_from_gpx(gpx_file_path)
+#gpx_file_path = 'x'
 #route_df = extract_data_from_gpx(gpx_file_path)
-z_k = route_df[['latitude', 'longitude', 'elevation', 'time', 'speed']].values
+#route_df = extract_data_from_gpx(gpx_file_path)
+#z_k = route_df[['latitude', 'longitude', 'elevation', 'time', 'speed']].values
 # Add this print statement in your main function before the loop
-print("Extracted GPX Data:")
-print(z_k)
+#print("Extracted GPX Data:")
+#print(z_k)
 
 
 def ekf(z_k_observation_vector, state_estimate_k_minus_1, P_k_minus_1):
@@ -75,16 +76,22 @@ def ekf(z_k_observation_vector, state_estimate_k_minus_1, P_k_minus_1):
     return state_estimate_k, P_k
 
 
+def get_gpx_file_path():
+    """Return the GPX file path passed as the first argument, or exit with usage."""
+    if len(sys.argv) < 2:
+        print(f"Usage: python {sys.argv[0]} <path_to_gpx_file>")
+        sys.exit(1)
+    return sys.argv[1]
+
 def main():
     # Extract data from GPX file
     # ADD YOUR FILE PATH HERE
-    gpx_file_path = 'x'
+    gpx_file_path = get_gpx_file_path()
     route_df = extract_data_from_gpx(gpx_file_path)
     z_k = route_df[['latitude', 'longitude', 'elevation']].values
 
     # Initialization
-    #state_estimate_k_minus_1 = np.array([43.7812687642872333526611328125, -80.03338177688419818878173828125, 390.79998779296875])
-    state_estimate = z_k[0].copy()    
+    state_estimate_k_minus_1 = z_k[0].copy()    
     P_k_minus_1 = np.eye(3) * 0.1  # Identity matrix with 0.1 instead of 1
 
     # Time interval in seconds (you may want to adjust this)
@@ -95,7 +102,7 @@ def main():
     estimated_longitudes = []
 
     # Start at k=1 and go through each of the sensor observations
-    for obs_vector_z_k in z_k:
+    for obs_vector_z_k in z_k[1:]:
         # Run the Extended Kalman Filter and store the near-optimal state and covariance estimates
         optimal_state_estimate_k, covariance_estimate_k = ekf(
             obs_vector_z_k,
