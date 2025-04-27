@@ -30,15 +30,21 @@ def extract_data_from_gpx(gpx_file_path):
 
     return route_df
 
-# ADD YOUR FILE PATH HERE
-#gpx_file_path = 'x'
-#route_df = extract_data_from_gpx(gpx_file_path)
-#route_df = extract_data_from_gpx(gpx_file_path)
-#z_k = route_df[['latitude', 'longitude', 'elevation', 'time', 'speed']].values
-# Add this print statement in your main function before the loop
-#print("Extracted GPX Data:")
-#print(z_k)
+def get_gpx_file_path():
+    """Return the GPX file path passed as the first argument, or exit with usage."""
+    if len(sys.argv) < 2:
+        print(f"Usage: python {sys.argv[0]} <path_to_gpx_file>")
+        sys.exit(1)
+    return sys.argv[1]
 
+# ADD YOUR FILE PATH HERE
+gpx_file_path = get_gpx_file_path()
+route_df = extract_data_from_gpx(gpx_file_path)
+z_k = route_df[['latitude', 'longitude', 'elevation', 'time', 'speed']].values
+# Add this print statement in your main function before the loop
+print("Extracted GPX Data:")
+print(z_k)
+print("====================================================")
 
 def ekf(z_k_observation_vector, state_estimate_k_minus_1, P_k_minus_1):
     # Update A matrix based on the bicycle model
@@ -76,12 +82,6 @@ def ekf(z_k_observation_vector, state_estimate_k_minus_1, P_k_minus_1):
     return state_estimate_k, P_k
 
 
-def get_gpx_file_path():
-    """Return the GPX file path passed as the first argument, or exit with usage."""
-    if len(sys.argv) < 2:
-        print(f"Usage: python {sys.argv[0]} <path_to_gpx_file>")
-        sys.exit(1)
-    return sys.argv[1]
 
 def main():
     # Extract data from GPX file
